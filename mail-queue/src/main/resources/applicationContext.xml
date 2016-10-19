@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 以下为简单bean配置的schema，在不同jar包中有schema使用文件 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans    
+                            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd    
+                            http://www.springframework.org/schema/context    
+                            http://www.springframework.org/schema/context/spring-context-3.1.xsd    
+                            http://www.springframework.org/schema/mvc    
+                            http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                            http://www.springframework.org/schema/tx
+                            http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+                            http://www.springframework.org/schema/aop
+                            http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+	
+	<mvc:annotation-driven/><!-- 配合默认的注解处理映射器使用，使mvc能注解驱动 --> 
+	<tx:annotation-driven transaction-manager="transactionManager"/><!-- 使事务管理能注解驱动 -->
+	<context:component-scan base-package="com.palmshe.access"/><!-- 扫描注解并注册为bean -->
+	<!-- 在tx命名空间下，配置声明式事务，即配置了关于事务的通知 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager"><!-- 指定事务管理器 -->
+		<tx:attributes>
+			<!-- required表示save开头的方法都需要事务管理，其他的事务属性为默认值 -->
+			<tx:method name="add*" isolation="DEFAULT" propagation="REQUIRED" read-only="false" timeout="-1"/>
+			<!-- supports表示任意方法可进行事务管理，也可不进行事务管理，其他的事务属性为默认值-->
+			<tx:method name="*" isolation="DEFAULT" propagation="SUPPORTS" read-only="false" timeout="-1"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 在aop命名空间下，定义执行通知的切入点
+	<aop:config>
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* com.genius.cm.service.impl.UserEmpServiceImpl.*(..))"/>
+	</aop:config> -->
+	
+	<!-- 登录拦截器 -->
+	<bean id="loginHandlerInterceptor" class="com.genius.cm.interceptor.LoginHandlerInterceptor"/>
+	<!-- mvc命名空间下拦截器的使用
+	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="loginHandlerInterceptor"/>
+			</list>
+		</property>
+	</bean>
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/userEmp/**"/>
+			<mvc:mapping path="/appInfo/**"/>
+			<mvc:mapping path="/emailInfo/**"/>
+			<mvc:mapping path="/propertyInfo/**"/>
+			<mvc:mapping path="/rtxInfo/**"/>
+			<mvc:mapping path="/ruleConfig/**"/>
+			<ref bean="loginHandlerInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>-->
+</beans>

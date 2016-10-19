@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Bootstrap</title>
+<!--字符编码-->
+<meta charset="utf-8">
+	<!-- 贯彻移动先行宗旨，保持UI布局和移动设备一致，缩放为原始大小-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Bootstrap -->
+<link href="../bootstrap-3.3.5-dist/css/bootstrap.css" rel="stylesheet"
+	media="screen">
+	<!--以下两个插件用于IE8，支持其HTML5元素-->
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+<style type="text/css">
+body {
+	margin:20px;
+	background-image: url("../img/login/login02.jpg");
+	background-repeat: no-repeat;
+	background-size: 100% 1000px;
+}
+
+div.panel-form {
+	position: absolute;
+	top: 33.3333%;
+}
+
+span.glyphicon-gap {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+</style>
+</head>
+<body>
+	<div class="container">
+		<div
+			class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-lg-offset-3 col-sm-offset-3
+		col-md-offset-3 col-xs-offset-3 panel-form">
+			<div class="panel panel-default panel-primary">
+				<div class="panel-heading">
+					<span class="glyphicon glyphicon-log-in"></span><span
+						class="glyphicon-gap">权限管理登录</span>
+				</div>
+				<div class="panel-body">
+					<form method="post">
+						<div class="form-group input-group">
+							<span class="input-group-addon"> <span
+								class="glyphicon glyphicon-user"></span></span>
+							<!--这里的input必须使用.form-control-->
+							<input id="username" name="username" type="text"
+								class="form-control" placeholder="请输入用户名"
+								onblur="javascript:validateForm(this);"></input>
+						</div>
+						<div class="alert alert-danger">
+							<!--需要设置属性和样式-->
+							<button type="button" class="close close-alert-btn"
+								onclick="javascript:hideAlertInfo(this);">x</button>
+							<p>请输入正确的用户名，格式为邮箱地址</p>
+						</div>
+						<div class="input-group form-group">
+							<span class="input-group-addon"> <span
+								class="glyphicon glyphicon-lock"></span></span>
+							<!--这里的input必须使用.form-control-->
+							<input id="passwd" name="passwd" type="password"
+								class="form-control" placeholder="请输入用户密码"
+								onblur="javascript:validateForm(this);"></input>
+						</div>
+						<div class="alert alert-danger">
+							<!--需要设置属性和样式-->
+							<button type="button" class="close close-alert-btn"
+								onclick="javascript:hideAlertInfo(this);">x</button>
+							<p>请输入正确的密码，格式为数字加英文字母</p>
+						</div>
+						<button class="btn btn-primary pull-right">登录</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--如果要使用bootstrap的js插件，就必须先引用jquery-->
+	<script src="../jquery-3.0.0.min.js"></script>
+	<script src="../bootstrap-3.3.5-dist/js/bootstrap.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			//页面初始化的时候，关闭所有的警告
+			//$(".alert").alert("close");该方法将alert销毁了，即调用了remove()方法
+			var buttonObjs = $("button.close-alert-btn");
+			//隐藏提示框
+			for (var i = 0; i < buttonObjs.length; i++) {
+				hideAlertInfo(buttonObjs.eq(i));
+			}
+		});
+
+		function hideAlertInfo(obj) {
+			$(obj).parent().hide();
+		}
+
+		function validateForm(obj) {
+			switch (obj.id) {
+			case "username":
+				if (obj.value == "songxiong") {
+					$(obj).parent().next().hide();
+					return;
+				}
+			case "passwd":
+				if (obj.value == "123") {
+					$(obj).parent().next().hide()
+					return;
+				}
+			default:
+				$(obj).parent().next().show();
+				break;
+			}
+		}
+	</script>
+</body>
+</html>

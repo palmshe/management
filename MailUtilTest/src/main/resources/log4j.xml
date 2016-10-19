@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- 自定义格式输出到控制台 -->
+	<appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+		<param name="Threshold" value="debug" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-d[%t]%-7p%c : %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="consoleAppender-error" class="org.apache.log4j.ConsoleAppender">
+		<param name="Threshold" value="error" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%-d[%t]%n>>>>>>>>>>>>>>>>>>>>>>>%n>>>>>>>>>>>>>%-7p%n%l : %m%n" />
+		</layout>
+	</appender>
+
+	<!-- 输出到文件，每天更新一个文件 -->
+	<appender name="fileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Threshold" value="debug" />
+		<param name="Append" value="true" />
+		<param name="File" value="D://logs/log.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-d[%t]%-7p%c : %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="fileAppender-error" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Threshold" value="error" />
+		<param name="Append" value="true" />
+		<param name="File" value="D://logs/log-error.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%-d[%t]%n>>>>>>>>>>>>>>>>>>>>>>>%n>>>>>>>>>>>>>%-7p%n%l : %m%n" />
+		</layout>
+	</appender>
+
+	<!-- 全局输出级别，输出目的地的级别设置高于全局输出设置 -->
+	<root>
+		<priority value="debug" />
+		<appender-ref ref="consoleAppender" />
+		<appender-ref ref="consoleAppender-error" />
+		<appender-ref ref="fileAppender" />
+		<appender-ref ref="fileAppender-error" />
+	</root>
+
+	<!-- sql映射文件 命名空间对应-->
+	<logger name="com.genius.access.dao" additivity="true">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="org.springframework" additivity="true">
+		<level value="error" />
+	</logger>
+
+</log4j:configuration>
+  
